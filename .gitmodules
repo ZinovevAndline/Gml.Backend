@@ -9,7 +9,7 @@
 	url = https://github.com/Gml-Launcher/Gml.Client.git
 [submodule "src/Gml.Web.Api"]
 	path = src/Gml.Web.Api
-	url = https://github.com/Gml-Launcher/Gml.Web.Api.git
+	url = https://github.com/ZinovevAndline/Gml.Web.Api.git
 [submodule "src/Gml.Web.Client"]
 	path = src/Gml.Web.Client
 	url = https://github.com/Scondic/Gml.Web.Client.git
