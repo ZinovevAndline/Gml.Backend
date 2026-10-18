@@ -9,7 +9,7 @@ x-logging: &default-logging
 services:
 
   gml-web-api:
-    image: ghcr.io/gml-launcher/gml.web.api:master
+    image: ${GML_WEB_API_IMAGE:-ghcr.io/zinovevandline/gml.web.api:master}
     container_name: gml-web-api
     restart: always
     volumes:
