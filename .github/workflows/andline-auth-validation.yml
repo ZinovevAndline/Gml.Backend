@@ -1,0 +1,41 @@
+name: ANDLINE GML authentication checks
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "src/gml-core"
+      - "src/Gml.Web.Api"
+      - ".github/workflows/andline-auth-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  auth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout Backend with pinned Core and API
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Test secure ANDLINE login and profile visibility
+        run: |
+          dotnet test src/Gml.Web.Api/tests/Gml.WebApi.Tests/Gml.WebApi.Tests.csproj \
+            -c Release -p:GmlCoreRoot="$GITHUB_WORKSPACE/src/gml-core" \
+            --filter 'FullyQualifiedName~AndlineAuthUrlTests|FullyQualifiedName~CustomEndpointAuthResponseTests|FullyQualifiedName~ProfileVisibilityTests'
+
+      - name: Publish GML API and Core
+        run: |
+          dotnet publish src/Gml.Web.Api/src/Gml.Web.Api/Gml.Web.Api.csproj \
+            -c Release -o /tmp/gml-andline-auth \
+            -p:GmlCoreRoot="$GITHUB_WORKSPACE/src/gml-core" -p:UseAppHost=false
+          test -s /tmp/gml-andline-auth/Gml.Web.Api.dll
