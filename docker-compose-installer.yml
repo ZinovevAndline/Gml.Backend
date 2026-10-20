@@ -15,7 +15,7 @@ x-logging: &default-logging
 services:
 
   gml-web-api:
-    image: ghcr.io/gml-launcher/gml.web.api:${GML_VERSION:-master}
+    image: ${GML_WEB_API_IMAGE:-ghcr.io/zinovevandline/gml.web.api:master}
     container_name: gml-web-api
     restart: always
     volumes:
@@ -28,6 +28,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8082;
       - SECURITY_KEY=${SECURITY_KEY}
+      - ANDLINE_GML_SHARED_SECRET=${ANDLINE_GML_SHARED_SECRET:-}
       - PROJECT_NAME=${PROJECT_NAME}
       - MARKET_ENDPOINT=${MARKET_ENDPOINT}
       - PROJECT_DESCRIPTION=${PROJECT_DESCRIPTION}
