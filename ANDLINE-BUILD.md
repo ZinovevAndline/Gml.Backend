@@ -48,8 +48,17 @@ Production Dockerfile уже устанавливает `GmlCoreRoot=/src/src/gm
 3. В GML Backend задать `ANDLINE_GML_SESSION_SECRET` (не менее 32 символов).
    В Laravel `services.andline_gml_session_secret` должен содержать **тот же**
    секрет. Не путать его с `ANDLINE_GML_SHARED_SECRET`.
+   В обычном Docker Compose ключ берётся из `.env`, а конфигурации
+   `docker-compose*.yml` передают его в API-контейнер. Значение нельзя
+   коммитить; пустой ключ означает отказ в авторизации MainMenu.
 4. В админке сайта проверить `gml_session_control_url`: HTTPS URL корня
    GML API без суффикса пути. Доступ Laravel → GML API должен работать.
+   Если используется Compose без Pterodactyl, укажите вместо upstream
+   `ghcr.io/gml-launcher/gml.web.api` собственный опубликованный образ:
+   образ по умолчанию из старого Compose **не** содержит наших изменений.
+   Для локальной Compose-сборки `docker-compose.yml` и
+   `docker-compose-external-debug.yml` теперь используют корневой Dockerfile
+   со связанными исходниками API/Core.
 5. Только после проверки backend и сайта выпускать новый Gml.Launcher и
    AndlineClient. Внутри игры используется отдельный JWT только для чтения,
    без сайта, платежей и прав администратора.

@@ -13,7 +13,7 @@ services:
     container_name: gml-web-api
     restart: always
     build:
-      context: src/Gml.Web.Api
+      context: .
       dockerfile: Dockerfile
     volumes:
       - ./data/GmlBackend:/root/${PROJECT_NAME}
@@ -25,6 +25,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8082;
       - SECURITY_KEY=${SECURITY_KEY}
+      - ANDLINE_GML_SESSION_SECRET=${ANDLINE_GML_SESSION_SECRET:-}
       - PROJECT_NAME=${PROJECT_NAME}
       - MARKET_ENDPOINT=${MARKET_ENDPOINT}
       - PROJECT_DESCRIPTION=${PROJECT_DESCRIPTION}
